@@ -28,7 +28,7 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           export VERSION=$(cat service.yaml)
-          export CF_IMAGE=docker.io/$DOCKERHUB_USERNAME/${{ github.event.repository.name }}-test:$VERSION
+          export CF_IMAGE=docker.io/$DOCKERHUB_USERNAME/${{ github.event.repository.name }}:$VERSION
           echo "CF_IMAGE=$CF_IMAGE" >> $GITHUB_ENV
           docker build . --file Dockerfile --build-arg COLOR=$VERSION --tag $CF_IMAGE && docker push $CF_IMAGE
 
@@ -53,7 +53,7 @@ jobs:
 
           # GitHub authentication token. !! Committing a plain text token is a security risk. We highly recommend using encrypted secrets. !!
           # Documentation - https://docs.github.com/en/actions/security-guides/encrypted-secrets
-          CF_GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+          CF_GITHUB_TOKEN: ${{secrets.GH_TOKEN }}
 
           # Issue tracking integration to use to enrich the image.
           CF_JIRA_INTEGRATION: 'jira'
@@ -63,7 +63,7 @@ jobs:
           CF_JIRA_PROJECT_PREFIX: 'CR'
 
           # Search for issue IDs matching this string to associate with your image.
-          CF_JIRA_MESSAGE: CR-0000
+          CF_JIRA_MESSAGE: CR-22087
 
           CF_VERBOSE: "true"
 
@@ -76,11 +76,11 @@ jobs:
           path: .
       - name: Update application version
         run: |
-          IMAGE=${{ env.CF_IMAGE }} yq -i '.spec.template.spec.containers.[0].image = strenv(IMAGE)' canary-rollout/deploy/canary-rollout.yaml
+          IMAGE=${{ env.CF_IMAGE }} yq -i '.spec.template.spec.containers.[0].image = strenv(IMAGE)' deploy/canary-rollout.yaml
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.GH_TOKEN }}
           commit-message: Update version
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
