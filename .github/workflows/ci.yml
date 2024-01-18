@@ -72,7 +72,7 @@ jobs:
       - name: Checkout application repo
         uses: actions/checkout@v3
         with:
-          repository: codefresh-sandbox/canary-rollout
+          repository: vadim-kharin-codefresh/canary-rollout
           path: .
       - name: Update application version
         run: |
