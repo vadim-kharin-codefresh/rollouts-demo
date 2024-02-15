@@ -35,7 +35,7 @@ jobs:
       - name: report image
         with:
           # Runtime to use for the enrichment.
-          CF_RUNTIME_NAME: 'codefresh-hosted'
+          CF_RUNTIME_NAME: 'codefresh'
           CF_PLATFORM_URL: 'https://sandbox-1.codefresh.io'
 
           # API key for authentication to Codefresh. !! Committing a plain text token is a security risk. We highly recommend using encrypted secrets. !!
